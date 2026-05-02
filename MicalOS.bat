@@ -47,6 +47,10 @@ if /i "%CMD%"=="info"        goto cmd_info
 if /i "%CMD%"=="limpar"      goto cmd_limpar
 if /i "%CMD%"=="usuario"     goto cmd_usuario
 if /i "%CMD%"=="sair"        goto cmd_sair
+
+set "CMD_BASE=%CMD:~0,3%"
+if /i "%CMD_BASE%"=="run" goto cmd_run
+
 if not "%CMD%"==""           echo  Comando desconhecido: %CMD%. Digite 'ajuda'.
 echo.
 goto prompt
@@ -55,14 +59,15 @@ goto prompt
 echo.
 echo  Comandos disponiveis:
 echo  ----------------------
-echo  ajuda      - Mostra esta lista
-echo  apps       - Lista os aplicativos
-echo  calc       - Abre a calculadora
-echo  adivinha   - Jogo de adivinhar numero
-echo  info       - Informacoes do sistema
-echo  usuario    - Mudar nome de usuario
-echo  limpar     - Limpa a tela
-echo  sair       - Encerra o MicalOS
+echo  ajuda          - Mostra esta lista
+echo  apps           - Lista os aplicativos
+echo  calc           - Abre a calculadora
+echo  adivinha       - Jogo de adivinhar numero
+echo  run [arquivo]  - Executa um app .bat do MicalOS
+echo  info           - Informacoes do sistema
+echo  usuario        - Mudar nome de usuario
+echo  limpar         - Limpa a tela
+echo  sair           - Encerra o MicalOS
 echo.
 goto prompt
 
@@ -74,6 +79,27 @@ echo  [1] calc      - Calculadora
 echo  [2] adivinha  - Jogo Adivinha o Numero
 echo.
 goto prompt
+
+:cmd_run
+set "RUN_ARG=%CMD:~4%"
+if "%RUN_ARG%"=="" (
+    echo.
+    echo  Uso: run [arquivo]
+    echo  Exemplo: run apps\meuapp.bat
+    echo.
+    goto prompt
+)
+if not exist "%RUN_ARG%" (
+    echo.
+    echo  Erro: arquivo '%RUN_ARG%' nao encontrado.
+    echo.
+    goto prompt
+)
+echo.
+echo  Executando: %RUN_ARG%
+echo.
+call "%RUN_ARG%"
+goto shell
 
 :cmd_calc
 call apps\calculadora.bat
