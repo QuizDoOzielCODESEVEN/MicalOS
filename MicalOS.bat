@@ -81,7 +81,7 @@ echo.
 goto prompt
 
 :cmd_run
-set "RUN_ARG=%CMD:~4%"
+set "RUN_ARG=!CMD:~4!"
 if "%RUN_ARG%"=="" (
     echo.
     echo  Uso: run [arquivo]
